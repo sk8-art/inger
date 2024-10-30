@@ -11,8 +11,8 @@ namespace game {
         private const int MapHeight = 32;
 
         // Переменные для позиции и угла поворота игрока
-        private static double _playerX;
-        private static double _playerY;
+        private static double _playerX = 1.5;
+        private static double _playerY = 1.5;
         private static double _playerA = 0;
 
         // Константы для глубины отрисовки и поля зрения
@@ -66,6 +66,11 @@ namespace game {
             _map += "#..............................#";
             _map += "################################";
 
+            while (true)
+            {
+                RenderFrame();
+                Thread.Sleep(1000);
+            }
         }
 
         private static void RenderFrame()

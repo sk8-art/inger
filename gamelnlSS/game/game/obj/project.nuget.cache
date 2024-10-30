@@ -1,13 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "+bGgICa4blPPN5GGVrlh3jnZ5P3wZSezc++jQ89NSlzdCA/wvX5464X52+Omi+UnVFASdxxUvvnQ1thXfF/Bxg==",
+  "dgSpecHash": "HX2va3FLTpwzw1prd1wgRoSETg5F/jc3hbu0XwcG13BELTJ2cxQQIE8b7Bw3MAHlCOFbf1ylckG2nsK12GG05Q==",
   "success": true,
   "projectFilePath": "C:\\Users\\belik\\inger\\gamelnlSS\\game\\game\\game.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\belik\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.17\\microsoft.windowsdesktop.app.ref.7.0.17.nupkg.sha512",
-    "C:\\Users\\belik\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.17\\microsoft.netcore.app.ref.7.0.17.nupkg.sha512",
-    "C:\\Users\\belik\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.17\\microsoft.aspnetcore.app.ref.7.0.17.nupkg.sha512",
-    "C:\\Users\\belik\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.17\\microsoft.netcore.app.host.win-x64.7.0.17.nupkg.sha512"
-  ],
+  "expectedPackageFiles": [],
   "logs": []
 }
