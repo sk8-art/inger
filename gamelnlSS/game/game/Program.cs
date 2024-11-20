@@ -10,9 +10,6 @@ namespace game {
         private const int MapWidth = 32;
         private const int MapHeight = 32;
 
-        private const int Width = 6;
-        private const int Height = 4;
-
         private static double _playerX;
         private static double _playerY;
         private static double _playerA = 0;
@@ -32,7 +29,7 @@ namespace game {
 
             _map += "################################";
             _map += "#P..$.......##.................#";
-            _map += "#.###..#####..#####..###..####.#";
+            _map += "#.###..############..###..####.#";
             _map += "#.#...#.............#..........#";
             _map += "#.#.###..#####..###.###..##..#.#";
             _map += "#.#.....#....#.........#..#....#";
@@ -127,10 +124,6 @@ namespace game {
             }
         }
 
-        private static void InitializeCoinPosition()
-        {
-
-        }
         private static void MovePlayer(double deltaX, double deltaY)
         {
             double newX = _playerX + deltaX;
