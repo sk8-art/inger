@@ -28,7 +28,7 @@ namespace game {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.CursorVisible = false;
 
-            _map += "################################";
+            _map += "####################";
             _map += "#..$......P.$....$.#";
             _map += "###...#####....#####";
             _map += "#.....$.#..........#";
