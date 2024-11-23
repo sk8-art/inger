@@ -7,8 +7,8 @@ namespace game {
         private const int ScreenWidth = 150;
         private const int ScreenHeight = 50;
 
-        private const int MapWidth = 32;
-        private const int MapHeight = 32;
+        private const int MapWidth = 20;
+        private const int MapHeight = 10;
 
         private static double _playerX;
         private static double _playerY;
@@ -18,6 +18,7 @@ namespace game {
         private const double Fov = Math.PI / 3;
 
         private static string _map = "";
+        private static int _collectedCoins;
 
         private static readonly char[] Screen = new char[ScreenHeight * ScreenWidth];
         static void Main(string[] args)
@@ -28,38 +29,16 @@ namespace game {
             Console.CursorVisible = false;
 
             _map += "################################";
-            _map += "#P..$.......##.................#";
-            _map += "#.###..############..###..####.#";
-            _map += "#.#...#.............#..........#";
-            _map += "#.#.###..#####..###.###..##..#.#";
-            _map += "#.#.....#....#.........#..#....#";
-            _map += "#.#..#####.#####..###..###..####";
-            _map += "#.#..#.......#...#.....#.....#.#";
-            _map += "#.#..#..###..#####..###..#####.#";
-            _map += "#.#..#..#.........#.....#......#";
-            _map += "#.#..###..###..#####..###..###.#";
-            _map += "#.#.....#.................#....#";
-            _map += "#.##########..#####..##.#####..#";
-            _map += "#.##########..#####..##.#####..#";
-            _map += "#..........#..#.........#......#";
-            _map += "#..#####..###..###..###..####..#";
-            _map += "#..#.......#.#..............#..#";
-            _map += "#.###..###..###..#########..####";
-            _map += "#...#.............#.........#..#";
-            _map += "#.#.###..###..###..###..###..#.#";
-            _map += "#.#..#....#.........#..........#";
-            _map += "#.#..###..#####..#######..####.#";
-            _map += "#...#..........#.............#.#";
-            _map += "###..##..######.###########..#.#";
-            _map += "#.....#...#.................#..#";
-            _map += "#.###.###.#####..###..##.###..##";
-            _map += "#.#...........#.........#....#.#";
-            _map += "#.#########..###########..##..##";
-            _map += "#.#########..###########..##..##";
-            _map += "#..........#.................#.#";
-            _map += "#..#######..###..#..#..###..####";
-            _map += "#..#######..###..#..#..###..####";
-            _map += "################################";
+            _map += "#..$......P.$....$.#";
+            _map += "###...#####....#####";
+            _map += "#.....$.#..........#";
+            _map += "#...#####.....#..$.#";
+            _map += "#..$..#.......######";
+            _map += "#########..........#";
+            _map += "#....$.........#.$.#";
+            _map += "####....####...#####";
+            _map += "#.$......#.$.......#";
+            _map += "####################";
 
             InitializePlayerPosition();
 
@@ -103,11 +82,9 @@ namespace game {
                             break;
                     }
                 }
-
                 RenderFrame();
             }
         }
-
         private static void InitializePlayerPosition()
         {
             for (int y = 0; y < MapHeight; y++)
@@ -131,8 +108,16 @@ namespace game {
 
             if (_map[(int)newY * MapWidth + (int)newX] != '#')
             {
+                if (_map[(int)newY * MapWidth + (int)newX] == '$')
+                {
+                    _collectedCoins++;
+                    _map = _map.Remove((int)newY * MapWidth + (int)newX, 1).Insert((int)newY * MapWidth + (int)newX, " ");
+                }
+
                 _playerX = newX;
                 _playerY = newY;
+
+                DisplayMiniMap();
             }
         }
 
@@ -211,9 +196,35 @@ namespace game {
                     Screen[(int)_playerY * ScreenWidth + (int)_playerX] = '$';
                 }
             }
-
             Console.SetCursorPosition(0, 0);
             Console.Write(Screen);
+        }
+        private static void DisplayMiniMap()
+        {
+            Console.WriteLine("Миникарта:");
+
+            for (int y = 0; y < MapHeight; y++)
+            {
+                for (int x = 0; x < MapWidth; x++)
+                {
+                    if (x >= 0 && x < MapWidth && y >= 0 && y < MapHeight)
+                    {
+                        char cell = _map[y * MapWidth + x];
+
+                        if (x == (int)_playerX && y == (int)_playerY)
+                        {
+                            Console.Write("P ");
+                        }
+                        else
+                        {
+                            Console.Write($"{cell} ");
+                        }
+                    }
+                }
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("Собрано монет: " + _collectedCoins);
         }
     }
 }
