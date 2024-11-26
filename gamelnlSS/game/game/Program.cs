@@ -14,19 +14,20 @@ namespace game {
         private static double _playerY;
         private static double _playerA = 0;
 
-        private const double Depth = 16;
+        private const double Depth = 16; // Константа для глубины видимости.
         private const double Fov = Math.PI / 3;
 
         private static string _map = "";
         private static int _collectedCoins;
+        private const int CoinsToWin = 10;
 
-        private static readonly char[] Screen = new char[ScreenHeight * ScreenWidth];
+        private static readonly char[] Screen = new char[ScreenHeight * ScreenWidth]; 
         static void Main(string[] args)
         {
-            Console.SetWindowSize(ScreenWidth, ScreenHeight);
-            Console.SetBufferSize(ScreenWidth, ScreenHeight);
+            Console.SetWindowSize(ScreenWidth, ScreenHeight); // Устанавливаем размер окна консоли
+            Console.SetBufferSize(ScreenWidth, ScreenHeight); // Устанавливаем размер буфера консоли
             Console.OutputEncoding = System.Text.Encoding.UTF8;
-            Console.CursorVisible = false;
+            Console.CursorVisible = false; // Скрываем курсор
 
             _map += "####################";
             _map += "#..$......P.$....$.#";
@@ -36,8 +37,7 @@ namespace game {
             _map += "#..$..#.......######";
             _map += "#########..........#";
             _map += "#....$.........#.$.#";
-            _map += "####....####...#####";
-            _map += "#.$......#.$.......#";
+            _map += "#.$........$...#...#";
             _map += "####################";
 
             InitializePlayerPosition();
@@ -49,8 +49,8 @@ namespace game {
             while (true)
             {
                 DateTime dateTimeTo = DateTime.Now;
-                double elapsedTime = (dateTimeTo - dateTimeFrom).TotalSeconds;
-                dateTimeFrom = DateTime.Now;
+                double elapsedTime = (dateTimeTo - dateTimeFrom).TotalSeconds;// Рассчитываем время, прошедшее с предыдущего кадра
+                dateTimeFrom = DateTime.Now; // Обновляем время начала текущего кадра
 
                 if (Console.KeyAvailable)
                 {
@@ -83,6 +83,7 @@ namespace game {
                     }
                 }
                 RenderFrame();
+                DisplayMiniMap();
             }
         }
         private static void InitializePlayerPosition()
@@ -105,19 +106,27 @@ namespace game {
         {
             double newX = _playerX + deltaX;
             double newY = _playerY + deltaY;
+            if (newX >= 0 && newX < MapWidth && newY >= 0 && newY < MapHeight) { 
 
-            if (_map[(int)newY * MapWidth + (int)newX] != '#')
-            {
-                if (_map[(int)newY * MapWidth + (int)newX] == '$')
+                if (_map[(int)newY * MapWidth + (int)newX] != '#')
                 {
-                    _collectedCoins++;
-                    _map = _map.Remove((int)newY * MapWidth + (int)newX, 1).Insert((int)newY * MapWidth + (int)newX, " ");
+                    if (_map[(int)newY * MapWidth + (int)newX] == '$')
+                    {
+                        _collectedCoins++;
+                        _map = _map.Remove((int)newY * MapWidth + (int)newX, 1).Insert((int)newY * MapWidth + (int)newX, " ");
+
+                        if (_collectedCoins >= CoinsToWin)
+                        {
+                            Console.WriteLine("Поздравляем! Вы собрали достаточно монет для победы!");
+                            Console.WriteLine("Нажмите любую клавишу для выхода...");
+                            Console.ReadKey();
+                            Environment.Exit(0);
+                        }
+                    }
+
+                    _playerX = newX;
+                    _playerY = newY;
                 }
-
-                _playerX = newX;
-                _playerY = newY;
-
-                DisplayMiniMap();
             }
         }
 
@@ -154,6 +163,7 @@ namespace game {
                         }
                     }
                 }
+                // Определяем разделение на потолок и пол
                 int ceiling = (int)(ScreenHeight / 2d - ScreenHeight * Fov / distanceToWall);
                 int floor = ScreenHeight - ceiling;
 
@@ -201,15 +211,17 @@ namespace game {
         }
         private static void DisplayMiniMap()
         {
+            Console.SetCursorPosition(0, ScreenHeight - MapHeight - 1); // Устанавливаем курсор перед мини-картой
+
             Console.WriteLine("Миникарта:");
 
-            for (int y = 0; y < MapHeight; y++)
+            for (int y = 0; y < MapHeight; y++) // Проходим по высоте карты
             {
-                for (int x = 0; x < MapWidth; x++)
+                for (int x = 0; x < MapWidth; x++) // Проходим по ширине карты
                 {
-                    if (x >= 0 && x < MapWidth && y >= 0 && y < MapHeight)
+                    if (x >= 0 && x < MapWidth && y >= 0 && y < MapHeight) // Проверка на пределы карты
                     {
-                        char cell = _map[y * MapWidth + x];
+                        char cell = _map[y * MapWidth + x]; // Получаем символ из карты по текущей позиции
 
                         if (x == (int)_playerX && y == (int)_playerY)
                         {
